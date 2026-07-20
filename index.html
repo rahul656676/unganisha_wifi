@@ -219,6 +219,12 @@
     body.logged-in #bottom-nav { display: flex !important; }
   }
   
+  /* Toggle Switch */
+  .toggle-switch { width: 48px; height: 28px; background: #cbd5e1; border-radius: 14px; position: relative; transition: background 0.3s; }
+  .toggle-switch.on { background: var(--primary); }
+  .toggle-handle { width: 24px; height: 24px; background: white; border-radius: 50%; position: absolute; left: 2px; top: 2px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: transform 0.3s; }
+  .toggle-switch.on .toggle-handle { transform: translateX(20px); }
+  
   .nav-item {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     color: var(--text-muted); cursor: pointer; transition: color 0.2s; background: none; border: none; font-family: 'Outfit', sans-serif;
@@ -398,10 +404,10 @@
         <h2>Settings</h2>
         
         <div class="card" style="padding: 0; overflow: hidden;">
-          <div style="display: flex; padding: 20px 24px; border-bottom: 1px solid var(--border); align-items: center; cursor: pointer;">
+          <div style="display: flex; padding: 20px 24px; border-bottom: 1px solid var(--border); align-items: center; cursor: pointer;" onclick="togglePush()">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:24px; margin-right: 16px; color: var(--primary);"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" /></svg>
             <div style="flex: 1; font-weight: 600;">Push Notifications</div>
-            <div style="width: 48px; height: 28px; background: var(--primary); border-radius: 14px; position: relative;"><div style="width: 24px; height: 24px; background: white; border-radius: 50%; position: absolute; right: 2px; top: 2px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"></div></div>
+            <div id="push-toggle" class="toggle-switch on"><div class="toggle-handle"></div></div>
           </div>
           <div style="display: flex; padding: 20px 24px; border-bottom: 1px solid var(--border); align-items: center; cursor: pointer;" onclick="toggleLanguage()">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:24px; margin-right: 16px; color: var(--primary);"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" /></svg>
@@ -622,6 +628,19 @@
     currentLang = currentLang === 'English' ? 'Swahili' : 'English';
     document.getElementById('current-language').innerText = currentLang;
     showToast('Language changed to ' + currentLang, 'success');
+  }
+
+  let pushEnabled = true;
+  function togglePush() {
+    pushEnabled = !pushEnabled;
+    const toggle = document.getElementById('push-toggle');
+    if (pushEnabled) {
+      toggle.classList.add('on');
+      showToast('Push Notifications enabled', 'success');
+    } else {
+      toggle.classList.remove('on');
+      showToast('Push Notifications disabled', 'default');
+    }
   }
   
   function updateConnectionStatus() {
