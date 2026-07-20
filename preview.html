@@ -80,7 +80,7 @@
 
   /* Sidebar (Desktop) */
   #sidebar {
-    display: none; /* Only visible on desktop when logged in */
+    display: none; /* Controlled by .logged-in class */
     width: 280px;
     flex-direction: column;
     padding: 32px 24px;
@@ -117,8 +117,11 @@
     z-index: 10;
   }
   
+  body.logged-in .mobile-app-bar { display: none !important; }
+  
   @media (min-width: 768px) {
     .mobile-app-bar { display: none; }
+    body.logged-in #sidebar { display: flex !important; }
   }
 
   /* Screens */
@@ -213,7 +216,7 @@
     z-index: 20;
   }
   @media (max-width: 767px) {
-    #bottom-nav.active { display: flex; }
+    body.logged-in #bottom-nav { display: flex !important; }
   }
   
   .nav-item {
@@ -327,10 +330,10 @@
         <p class="subtitle" style="text-align: center;">We sent a 4-digit code to<br><strong style="color: var(--primary);" id="displayPhone"></strong></p>
         
         <div class="otp-group">
-          <input type="text" maxlength="1" class="otp-input" onkeyup="moveToNext(this, 1)">
-          <input type="text" maxlength="1" class="otp-input" onkeyup="moveToNext(this, 2)">
-          <input type="text" maxlength="1" class="otp-input" onkeyup="moveToNext(this, 3)">
-          <input type="text" maxlength="1" class="otp-input">
+          <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-input" onkeyup="moveToNext(this, 1)">
+          <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-input" onkeyup="moveToNext(this, 2)">
+          <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-input" onkeyup="moveToNext(this, 3)">
+          <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-input">
         </div>
         
         <button class="primary-btn" onclick="verifyOtp()" id="btn-verify-otp">Verify & Login</button>
@@ -477,13 +480,9 @@
     
     // Manage Navbars
     if (isLoggedIn) {
-      document.getElementById('bottom-nav').classList.add('active');
-      document.getElementById('sidebar').style.display = 'flex';
-      document.getElementById('mobileTopBar').style.display = 'none';
+      document.body.classList.add('logged-in');
     } else {
-      document.getElementById('bottom-nav').classList.remove('active');
-      document.getElementById('sidebar').style.display = 'none';
-      document.getElementById('mobileTopBar').style.display = 'flex';
+      document.body.classList.remove('logged-in');
     }
   }
 
