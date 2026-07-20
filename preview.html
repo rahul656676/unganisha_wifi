@@ -312,8 +312,8 @@
           </svg>
         </div>
         <div style="text-align: center; margin-top: 32px;">
-          <h1>Welcome Back</h1>
-          <p class="subtitle">Enter your phone number to access premium internet.</p>
+          <h1 id="welcome-title">Welcome Back</h1>
+          <p class="subtitle" id="welcome-sub">Enter your phone number to access premium internet.</p>
         </div>
         
         <div class="input-group">
@@ -350,7 +350,7 @@
 
       <!-- Home Dashboard Screen -->
       <div id="screen-home" class="screen">
-        <h2>Dashboard</h2>
+        <h2 id="dash-title">Dashboard</h2>
 
         <div class="card" style="text-align: center; padding: 40px 24px;">
           <div id="connection-icon" style="width: 96px; height: 96px; background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.4);">
@@ -369,14 +369,14 @@
 
       <!-- Plans Screen -->
       <div id="screen-plans" class="screen">
-        <h2>Premium Plans</h2>
-        <p class="subtitle">Choose a high-speed data package that suits you.</p>
+        <h2 id="plans-title">Premium Plans</h2>
+        <p class="subtitle" id="plans-sub">Choose a high-speed data package that suits you.</p>
         <div id="plansList"></div>
       </div>
 
       <!-- Profile Screen -->
       <div id="screen-profile" class="screen">
-        <h2>Profile</h2>
+        <h2 id="profile-title">Profile</h2>
         
         <div class="card" style="display: flex; align-items: center; gap: 20px; padding: 32px 24px; background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6));">
           <div style="width: 80px; height: 80px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 800; color: white; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);">U</div>
@@ -401,22 +401,22 @@
 
       <!-- Settings Screen -->
       <div id="screen-settings" class="screen">
-        <h2>Settings</h2>
+        <h2 id="settings-title">Settings</h2>
         
         <div class="card" style="padding: 0; overflow: hidden;">
           <div style="display: flex; padding: 20px 24px; border-bottom: 1px solid var(--border); align-items: center; cursor: pointer;" onclick="togglePush()">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:24px; margin-right: 16px; color: var(--primary);"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" /></svg>
-            <div style="flex: 1; font-weight: 600;">Push Notifications</div>
+            <div style="flex: 1; font-weight: 600;" id="settings-push">Push Notifications</div>
             <div id="push-toggle" class="toggle-switch on"><div class="toggle-handle"></div></div>
           </div>
           <div style="display: flex; padding: 20px 24px; border-bottom: 1px solid var(--border); align-items: center; cursor: pointer;" onclick="toggleLanguage()">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:24px; margin-right: 16px; color: var(--primary);"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" /></svg>
-            <div style="flex: 1; font-weight: 600;">Language</div>
+            <div style="flex: 1; font-weight: 600;" id="settings-lang">Language</div>
             <div id="current-language" style="color: var(--text-muted);">English</div>
           </div>
           <div style="display: flex; padding: 20px 24px; align-items: center; cursor: pointer; color: var(--error);" onclick="logout()">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:24px; margin-right: 16px;"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" /></svg>
-            <div style="flex: 1; font-weight: 700;">Sign Out</div>
+            <div style="flex: 1; font-weight: 700;" id="settings-out">Sign Out</div>
           </div>
         </div>
       </div>
@@ -623,11 +623,46 @@
     showToast(`Purchased ${selectedPlan.name} successfully!`, 'success');
   }
 
-  let currentLang = 'English';
+  const translations = {
+    'en': {
+      'welcome-title': 'Welcome Back',
+      'welcome-sub': 'Enter your phone number to access premium internet.',
+      'btn-get-otp': 'Get OTP Code',
+      'dash-title': 'Dashboard',
+      'plans-title': 'Premium Plans',
+      'plans-sub': 'Choose a high-speed data package that suits you.',
+      'profile-title': 'Profile',
+      'settings-title': 'Settings',
+      'settings-push': 'Push Notifications',
+      'settings-lang': 'Language',
+      'settings-out': 'Sign Out'
+    },
+    'sw': {
+      'welcome-title': 'Karibu Tena',
+      'welcome-sub': 'Weka namba yako ya simu kupata intaneti bora.',
+      'btn-get-otp': 'Pata Namba',
+      'dash-title': 'Dashibodi',
+      'plans-title': 'Vifurushi Bora',
+      'plans-sub': 'Chagua kifurushi cha intaneti ya kasi.',
+      'profile-title': 'Wasifu',
+      'settings-title': 'Mipangilio',
+      'settings-push': 'Taarifa za Push',
+      'settings-lang': 'Lugha',
+      'settings-out': 'Toka Nje'
+    }
+  };
+
+  let currentLang = 'en';
   function toggleLanguage() {
-    currentLang = currentLang === 'English' ? 'Swahili' : 'English';
-    document.getElementById('current-language').innerText = currentLang;
-    showToast('Language changed to ' + currentLang, 'success');
+    currentLang = currentLang === 'en' ? 'sw' : 'en';
+    document.getElementById('current-language').innerText = currentLang === 'en' ? 'English' : 'Swahili';
+    
+    for (const [id, text] of Object.entries(translations[currentLang])) {
+      const el = document.getElementById(id);
+      if (el) el.innerText = text;
+    }
+    
+    showToast(currentLang === 'en' ? 'Language changed to English' : 'Lugha imebadilishwa kuwa Swahili', 'success');
   }
 
   let pushEnabled = true;
