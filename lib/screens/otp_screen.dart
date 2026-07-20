@@ -64,7 +64,7 @@ class _OtpScreenState extends State<OtpScreen> {
     setState(() => _isLoading = false);
 
     if (isValid) {
-      if (mounted) context.push('/plans');
+      if (mounted) context.go('/home');
     } else {
       setState(() {
         _errorText = 'Invalid code. For testing, use 1234.';

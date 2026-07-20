@@ -20,16 +20,6 @@ class PlanListScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Choose a plan'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Logout',
-            onPressed: () {
-              context.read<AppState>().clearSession();
-              context.go('/');
-            },
-          ),
-        ],
       ),
       body: ResponsiveScreenContainer(
         maxWidth: 520,

@@ -10,15 +10,6 @@ import '../widgets/responsive_screen_container.dart';
 class SubscriptionStatusScreen extends StatelessWidget {
   const SubscriptionStatusScreen({super.key});
 
-  void _onChangePlan(BuildContext context) {
-    context.go('/plans');
-  }
-
-  void _onLogout(BuildContext context) {
-    context.read<AppState>().clearSession();
-    context.go('/');
-  }
-
   @override
   Widget build(BuildContext context) {
     final appState = context.watch<AppState>();
@@ -69,24 +60,6 @@ class SubscriptionStatusScreen extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-            const SizedBox(height: 28),
-            ElevatedButton(
-              onPressed: () => _onChangePlan(context),
-              child: const Text('Change Plan'),
-            ),
-            const SizedBox(height: 12),
-            OutlinedButton(
-              onPressed: () => _onLogout(context),
-              style: OutlinedButton.styleFrom(
-                minimumSize: const Size.fromHeight(52),
-                foregroundColor: UnganishaColors.error,
-                side: const BorderSide(color: UnganishaColors.error),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              child: const Text('Logout'),
             ),
           ],
         ),
