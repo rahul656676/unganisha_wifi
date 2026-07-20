@@ -360,7 +360,7 @@
           <p id="connection-subtitle" style="color: var(--text-muted); font-size: 18px; margin-bottom: 0;">No active plan found.</p>
           
           <div id="active-plan-box" style="display:none; text-align: left; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border);">
-            <p style="color: var(--primary); font-size: 14px; font-weight: 700; letter-spacing: 1px; margin-bottom: 12px;">ACTIVE SUBSCRIPTION</p>
+            <p id="dash_active_sub" style="color: var(--primary); font-size: 14px; font-weight: 700; letter-spacing: 1px; margin-bottom: 12px;">ACTIVE SUBSCRIPTION</p>
             <h3 id="activePlanName" style="font-size: 24px; margin: 0 0 4px;"></h3>
             <p id="activePlanDetails" style="color: var(--text-muted); margin: 0; font-size: 16px;"></p>
           </div>
@@ -381,19 +381,19 @@
         <div class="card" style="display: flex; align-items: center; gap: 20px; padding: 32px 24px; background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6));">
           <div style="width: 80px; height: 80px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 800; color: white; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);">U</div>
           <div>
-            <p style="margin: 0 0 4px; color: var(--text-muted); font-weight: 600;">Registered Number</p>
+            <p id="prof_reg_number" style="margin: 0 0 4px; color: var(--text-muted); font-weight: 600;">Registered Number</p>
             <h1 id="profilePhone" style="margin: 0; font-size: 28px;"></h1>
           </div>
         </div>
 
-        <h3 style="margin: 32px 0 16px;">Account Details</h3>
+        <h3 id="prof_acc_details" style="margin: 32px 0 16px;">Account Details</h3>
         <div class="card" style="padding: 0; overflow: hidden;">
           <div style="display: flex; padding: 20px 24px; border-bottom: 1px solid var(--border);">
-            <div style="flex: 1;"><span style="color:var(--text-muted);">Status</span></div>
-            <div style="font-weight: 700; color: var(--accent);">Verified</div>
+            <div style="flex: 1;"><span id="prof_status" style="color:var(--text-muted);">Status</span></div>
+            <div id="prof_verified" style="font-weight: 700; color: var(--accent);">Verified</div>
           </div>
           <div style="display: flex; padding: 20px 24px;">
-            <div style="flex: 1;"><span style="color:var(--text-muted);">Data Usage</span></div>
+            <div style="flex: 1;"><span id="prof_data_usage" style="color:var(--text-muted);">Data Usage</span></div>
             <div style="font-weight: 700;">1.2 GB / ∞</div>
           </div>
         </div>
@@ -446,6 +446,7 @@
 </div>
 
 <script>
+  let currentLang = 'en';
   let currentPhone = '';
   let selectedPlan = null;
   let isLoggedIn = false;
@@ -583,16 +584,39 @@
   
   function renderPlans() {
     const list = document.getElementById('plansList');
+    
+    const t_upTo = currentLang === 'en' ? 'Up to' : 'Kasi hadi';
+    const t_speed = currentLang === 'en' ? 'Speed' : '';
+    const t_validFor = currentLang === 'en' ? 'Valid for' : 'Muda:';
+    const t_choosePlan = currentLang === 'en' ? 'Choose Plan' : 'Chagua Kifurushi';
+    
     list.innerHTML = '<div style="display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-top: 16px;">' + plans.map((p, i) => {
       let isSpecial = p.tag !== '';
+      
+      let t_tag = p.tag;
+      if (currentLang === 'sw' && p.tag === 'POPULAR') t_tag = 'MAARUFU';
+      if (currentLang === 'sw' && p.tag === 'BEST VALUE') t_tag = 'BORA ZAIDI';
+
+      let t_name = p.name;
+      if (currentLang === 'sw') {
+          if(p.name === 'Free Preview') t_name = 'Kionjo cha Bure';
+          if(p.name === 'Day Pass') t_name = 'Kifurushi cha Siku';
+          if(p.name === 'Weekly') t_name = 'Kifurushi cha Wiki';
+          if(p.name === 'Monthly Basic') t_name = 'Kifurushi cha Mwezi (Kawaida)';
+          if(p.name === 'Monthly Premium') t_name = 'Kifurushi cha Mwezi (Bora)';
+      }
+      
       let highlightStyle = isSpecial ? 'border: 2px solid var(--primary); box-shadow: 0 15px 30px -10px rgba(79, 70, 229, 0.4); transform: translateY(-4px);' : '';
-      let tagHtml = isSpecial ? `<div style="position: absolute; top: -14px; right: 24px; background: var(--primary); color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 800; letter-spacing: 1px; box-shadow: 0 4px 6px rgba(79,70,229,0.3);">${p.tag}</div>` : '';
+      let tagHtml = isSpecial ? `<div style="position: absolute; top: -14px; right: 24px; background: var(--primary); color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 800; letter-spacing: 1px; box-shadow: 0 4px 6px rgba(79,70,229,0.3);">${t_tag}</div>` : '';
       let btnStyle = isSpecial ? 'background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white;' : 'background: rgba(79, 70, 229, 0.1); color: var(--primary);';
+      
+      let durText = p.duration;
+      if (currentLang === 'sw') durText = durText.replace('mins', 'dakika').replace('hrs', 'masaa').replace('days', 'siku');
       
       return `
         <div class="card" style="position: relative; padding: 32px 24px; display: flex; flex-direction: column; height: 100%; transition: all 0.3s ease; cursor: pointer; ${highlightStyle}" onclick="selectPlan(${i})">
           ${tagHtml}
-          <h3 style="font-size: 22px; margin: 0 0 8px; font-weight: 700;">${p.name}</h3>
+          <h3 style="font-size: 22px; margin: 0 0 8px; font-weight: 700;">${t_name}</h3>
           <div style="font-size: 32px; font-weight: 800; color: var(--text-dark); margin-bottom: 24px;">${p.price}</div>
           
           <div style="flex: 1; display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px;">
@@ -600,17 +624,17 @@
               <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(16, 185, 129, 0.1); color: #10B981; display: flex; align-items: center; justify-content: center;">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" style="width: 20px;"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
               </div>
-              <span style="font-weight: 600; font-size: 15px;">Up to ${p.speed} Speed</span>
+              <span style="font-weight: 600; font-size: 15px;">${t_upTo} ${p.speed} ${t_speed}</span>
             </div>
             <div style="display: flex; align-items: center; gap: 14px; color: var(--text-muted);">
               <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(79, 70, 229, 0.1); color: var(--primary); display: flex; align-items: center; justify-content: center;">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" style="width: 20px;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
               </div>
-              <span style="font-weight: 600; font-size: 15px;">Valid for ${p.duration}</span>
+              <span style="font-weight: 600; font-size: 15px;">${t_validFor} ${durText}</span>
             </div>
           </div>
           
-          <button style="width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 700; font-family: 'Outfit'; font-size: 16px; cursor: pointer; transition: all 0.2s; ${btnStyle}" onclick="event.stopPropagation(); selectPlan(${i})">Choose Plan</button>
+          <button style="width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 700; font-family: 'Outfit'; font-size: 16px; cursor: pointer; transition: all 0.2s; ${btnStyle}" onclick="event.stopPropagation(); selectPlan(${i})">${t_choosePlan}</button>
         </div>
       `;
     }).join('') + '</div>';
@@ -637,7 +661,10 @@
       'settings-lang': 'Language',
       'settings-out': 'Sign Out',
       'nav_home': 'Home', 'nav_plans': 'Plans', 'nav_profile': 'Profile', 'nav_settings': 'Settings',
-      'nav_home_m': 'Home', 'nav_plans_m': 'Plans', 'nav_profile_m': 'Profile', 'nav_settings_m': 'Settings'
+      'nav_home_m': 'Home', 'nav_plans_m': 'Plans', 'nav_profile_m': 'Profile', 'nav_settings_m': 'Settings',
+      'prof_reg_number': 'Registered Number', 'prof_acc_details': 'Account Details',
+      'prof_status': 'Status', 'prof_verified': 'Verified', 'prof_data_usage': 'Data Usage',
+      'dash_active_sub': 'ACTIVE SUBSCRIPTION'
     },
     'sw': {
       'welcome-title': 'Karibu Tena',
@@ -652,11 +679,13 @@
       'settings-lang': 'Lugha',
       'settings-out': 'Toka Nje',
       'nav_home': 'Mwanzo', 'nav_plans': 'Vifurushi', 'nav_profile': 'Wasifu', 'nav_settings': 'Mipangilio',
-      'nav_home_m': 'Mwanzo', 'nav_plans_m': 'Vifurushi', 'nav_profile_m': 'Wasifu', 'nav_settings_m': 'Mipangilio'
+      'nav_home_m': 'Mwanzo', 'nav_plans_m': 'Vifurushi', 'nav_profile_m': 'Wasifu', 'nav_settings_m': 'Mipangilio',
+      'prof_reg_number': 'Namba Iliyosajiliwa', 'prof_acc_details': 'Maelezo ya Akaunti',
+      'prof_status': 'Hali', 'prof_verified': 'Imethibitishwa', 'prof_data_usage': 'Matumizi ya Data',
+      'dash_active_sub': 'KIFURUSHI KINACHOTUMIKA'
     }
   };
 
-  let currentLang = 'en';
   function toggleLanguage() {
     currentLang = currentLang === 'en' ? 'sw' : 'en';
     document.getElementById('current-language').innerText = currentLang === 'en' ? 'English' : 'Swahili';
@@ -665,6 +694,10 @@
       const el = document.getElementById(id);
       if (el) el.innerText = text;
     }
+    
+    // Re-render dynamic content
+    renderPlans();
+    updateConnectionStatus();
     
     showToast(currentLang === 'en' ? 'Language changed to English' : 'Lugha imebadilishwa kuwa Swahili', 'success');
   }
@@ -692,18 +725,27 @@
       icon.style.background = 'linear-gradient(135deg, #10B981 0%, #059669 100%)';
       icon.style.boxShadow = '0 10px 25px -5px rgba(16, 185, 129, 0.4)';
       icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" style="width: 48px; height: 48px;"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>';
-      title.innerText = 'Connected!';
-      sub.innerText = 'Your internet is active and fast.';
+      title.innerText = currentLang === 'en' ? 'Connected!' : 'Imeunganishwa!';
+      sub.innerText = currentLang === 'en' ? 'Your internet is active and fast.' : 'Intaneti yako ipo hewani na ina kasi.';
       
-      document.getElementById('activePlanName').innerText = selectedPlan.name;
-      document.getElementById('activePlanDetails').innerText = selectedPlan.details;
+      let t_name = selectedPlan.name;
+      if (currentLang === 'sw') {
+          if(t_name === 'Free Preview') t_name = 'Kionjo cha Bure';
+          if(t_name === 'Day Pass') t_name = 'Kifurushi cha Siku';
+          if(t_name === 'Weekly') t_name = 'Kifurushi cha Wiki';
+          if(t_name === 'Monthly Basic') t_name = 'Kifurushi cha Mwezi (Kawaida)';
+          if(t_name === 'Monthly Premium') t_name = 'Kifurushi cha Mwezi (Bora)';
+      }
+      
+      document.getElementById('activePlanName').innerText = t_name;
+      document.getElementById('activePlanDetails').innerText = selectedPlan.details || "";
       planBox.style.display = 'block';
     } else {
       icon.style.background = 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)';
       icon.style.boxShadow = '0 10px 25px -5px rgba(245, 158, 11, 0.4)';
       icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" style="width: 48px; height: 48px;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>';
-      title.innerText = 'Offline';
-      sub.innerText = 'No active plan found.';
+      title.innerText = currentLang === 'en' ? 'Offline' : 'Nje ya Mtandao';
+      sub.innerText = currentLang === 'en' ? 'No active plan found.' : 'Hakuna kifurushi kinachotumika.';
       planBox.style.display = 'none';
     }
   }
